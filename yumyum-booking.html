@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yum Yum Noodle Bar — Reservations & Catering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+    --cream: #FBF3E6;
+    --cream-alt: #F4E9D8;
+    --ink: #251C16;
+    --ink-soft: #6B5C4F;
+    --chili: #C4432B;
+    --chili-deep: #A2331F;
+    --mustard: #E3A857;
+    --jade: #4C7A63;
+    --jade-soft: #E7F0EA;
+    --line: #E7DAC5;
+    --white: #FFFFFF;
+    --radius: 18px;
+    --shadow: 0 2px 4px rgba(37,28,22,.05), 0 14px 30px rgba(37,28,22,.09);
+}
+*{ margin:0; padding:0; box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+    background: var(--cream);
+    color: var(--ink);
+    font-family:'Inter', Arial, sans-serif;
+    line-height:1.55;
+}
+h1,h2,h3{ font-family:'Fredoka', Arial, sans-serif; font-weight:600; }
+.wrap{ width:min(1080px,92%); margin:0 auto; }
+
+/* ---------- NOTE BANNER (for the demo, not the live site) ---------- */
+.demo-banner{
+    background: var(--ink); color: var(--cream);
+    text-align:center; font-size:.82rem; padding:10px 16px;
+}
+.demo-banner strong{ color: var(--mustard); }
+
+/* ---------- NAV ---------- */
+nav{ background: var(--cream); border-bottom:2px solid var(--line); position:sticky; top:0; z-index:40; }
+nav .wrap{ display:flex; align-items:center; justify-content:space-between; padding:18px 0; }
+.brand{ font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.3rem; color:var(--chili); text-decoration:none; letter-spacing:-.01em; }
+.nav-links{ display:flex; align-items:center; gap:26px; }
+.nav-links a{ color:var(--ink); text-decoration:none; font-weight:600; font-size:.92rem; }
+.nav-links a:hover{ color:var(--chili); }
+.nav-links .pill{ background:var(--chili); color:#fff !important; padding:9px 18px; border-radius:999px; }
+.nav-links .pill:hover{ background:var(--chili-deep); }
+
+/* ---------- HERO ---------- */
+.hero{ padding: 64px 0 56px; text-align:center; }
+.hero .tag{
+    display:inline-block; font-weight:600; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase;
+    background: var(--jade-soft); color: var(--jade); padding:7px 16px; border-radius:999px; margin-bottom:18px;
+}
+.hero h1{ font-size: clamp(1.9rem, 4vw, 2.7rem); max-width:20ch; margin:0 auto 16px; color:var(--ink); }
+.hero h1 span{ color: var(--chili); }
+.hero p{ color: var(--ink-soft); max-width:52ch; margin:0 auto 30px; font-size:1.05rem; }
+.hero-ctas{ display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+.btn{
+    display:inline-flex; align-items:center; gap:8px; padding:14px 26px; border-radius:999px;
+    font-weight:700; font-size:.95rem; text-decoration:none; border:2px solid transparent;
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.btn-chili{ background:var(--chili); color:#fff; }
+.btn-chili:hover{ background:var(--chili-deep); transform:translateY(-2px); box-shadow:var(--shadow); }
+.btn-outline{ background:transparent; border-color:var(--ink); color:var(--ink); }
+.btn-outline:hover{ background:var(--ink); color:var(--cream); }
+
+/* ---------- SECTION SHELL ---------- */
+section.panel{ padding: 56px 0; }
+.card{
+    background: var(--white); border:2px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 36px; max-width: 720px; margin: 0 auto;
+}
+.section-title{ text-align:center; margin-bottom:34px; }
+.section-title .tag{
+    display:inline-block; font-weight:600; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase;
+    color: var(--chili); margin-bottom:10px;
+}
+.section-title h2{ font-size: clamp(1.5rem,3vw,2rem); margin-bottom:10px; }
+.section-title p{ color: var(--ink-soft); max-width:48ch; margin:0 auto; }
+
+.form-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.field{ display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+.field label{ font-size:.84rem; font-weight:700; color:var(--ink); }
+.field .hint{ font-weight:400; color:var(--ink-soft); font-size:.78rem; }
+.field input, .field select, .field textarea{
+    font-family:'Inter',sans-serif; font-size:.95rem; padding:12px 14px;
+    border-radius:11px; border:2px solid var(--line); background: var(--cream); color:var(--ink);
+    resize:vertical;
+}
+.field input:focus, .field select:focus, .field textarea:focus{
+    outline:none; border-color: var(--chili); background:#fff;
+}
+.submit-btn{ width:100%; justify-content:center; margin-top:6px; }
+.form-note{ font-size:.8rem; color: var(--ink-soft); margin-top:14px; text-align:center; }
+#res-status, #cater-status{ font-size:.86rem; margin-top:10px; text-align:center; display:none; color:var(--jade); font-weight:600; }
+#res-status.show, #cater-status.show{ display:block; }
+
+.divider{ height:2px; background: var(--line); width:min(1080px,92%); margin: 8px auto; }
+
+/* ---------- FOOTER / LOCATIONS ---------- */
+footer{ background: var(--ink); color: var(--cream); padding: 46px 0 40px; margin-top: 40px; }
+footer .wrap{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:26px; }
+footer h4{ font-family:'Fredoka',sans-serif; color:var(--mustard); margin-bottom:8px; font-size:1.05rem; }
+footer p{ font-size:.86rem; color:#D8CBBB; line-height:1.6; }
+footer .brand-foot{ font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.2rem; color:var(--cream); margin-bottom:10px; }
+
+@media (max-width:720px){
+    .form-row{ grid-template-columns:1fr; }
+    .nav-links a:not(.pill){ display:none; }
+    .card{ padding:26px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="demo-banner">This page is a <strong>prototype</strong> — a working example of table reservations and catering requests, built to show what could sit on your site.</div>
+
+<nav>
+    <div class="wrap">
+        <a class="brand" href="#top">Yum Yum Noodle Bar</a>
+        <div class="nav-links">
+            <a href="#reservations">Reservations</a>
+            <a href="#catering">Catering</a>
+            <a class="pill" href="#reservations">Book a Table</a>
+        </div>
+    </div>
+</nav>
+
+<header class="hero" id="top">
+    <div class="wrap">
+        <div class="tag">Woodstock · Kingston · Red Hook</div>
+        <h1>Skip the phone tag. <span>Book a table or plan your event</span> right here.</h1>
+        <p>Two quick forms — one for a table, one for catering — so your request lands in our inbox with everything we need, the first time.</p>
+        <div class="hero-ctas">
+            <a href="#reservations" class="btn btn-chili">Reserve a Table</a>
+            <a href="#catering" class="btn btn-outline">Request Catering</a>
+        </div>
+    </div>
+</header>
+
+<section class="panel" id="reservations">
+    <div class="wrap">
+        <div class="section-title">
+            <div class="tag">Reservations</div>
+            <h2>Book a table</h2>
+            <p>We'll confirm by phone or email within one business day — for same-day requests, calling the location directly is still fastest.</p>
+        </div>
+        <div class="card">
+            <form id="reservation-form">
+                <div class="form-row">
+                    <div class="field">
+                        <label for="res-name">Name</label>
+                        <input id="res-name" type="text" required>
+                    </div>
+                    <div class="field">
+                        <label for="res-phone">Phone</label>
+                        <input id="res-phone" type="tel" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="field">
+                        <label for="res-email">Email</label>
+                        <input id="res-email" type="email" required>
+                    </div>
+                    <div class="field">
+                        <label for="res-location">Location</label>
+                        <select id="res-location" required>
+                            <option value="">Choose a location</option>
+                            <option>Woodstock — 4 Rock City Rd</option>
+                            <option>Kingston — 275 Fair St</option>
+                            <option>Red Hook — 7496 S Broadway</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="field">
+                        <label for="res-date">Date</label>
+                        <input id="res-date" type="date" required>
+                    </div>
+                    <div class="field">
+                        <label for="res-time">Time</label>
+                        <input id="res-time" type="time" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="res-party">Party size</label>
+                    <select id="res-party" required>
+                        <option value="">Choose party size</option>
+                        <option>1–2</option><option>3–4</option><option>5–6</option><option>7+ (please call for large parties)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="res-notes">Special requests <span class="hint">(optional)</span></label>
+                    <textarea id="res-notes" rows="3" placeholder="High chair, allergy note, celebrating something..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-chili submit-btn">Request Reservation</button>
+                <p class="form-note">This opens your email client with everything filled in and sends straight to the restaurant.</p>
+                <p id="res-status"></p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="panel" id="catering">
+    <div class="wrap">
+        <div class="section-title">
+            <div class="tag">Catering</div>
+            <h2>Plan your event</h2>
+            <p>Tell us the basics up front and we'll come back with a real menu and quote — no back-and-forth just to get started.</p>
+        </div>
+        <div class="card">
+            <form id="catering-form">
+                <div class="form-row">
+                    <div class="field">
+                        <label for="cat-name">Name</label>
+                        <input id="cat-name" type="text" required>
+                    </div>
+                    <div class="field">
+                        <label for="cat-phone">Phone</label>
+                        <input id="cat-phone" type="tel" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="field">
+                        <label for="cat-email">Email</label>
+                        <input id="cat-email" type="email" required>
+                    </div>
+                    <div class="field">
+                        <label for="cat-location">Preferred location</label>
+                        <select id="cat-location" required>
+                            <option value="">Choose a location</option>
+                            <option>Woodstock — 4 Rock City Rd</option>
+                            <option>Kingston — 275 Fair St</option>
+                            <option>Red Hook — 7496 S Broadway</option>
+                            <option>Not sure yet</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="field">
+                        <label for="cat-date">Event date</label>
+                        <input id="cat-date" type="date" required>
+                    </div>
+                    <div class="field">
+                        <label for="cat-guests">Guest count</label>
+                        <input id="cat-guests" type="number" min="1" placeholder="e.g. 25" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="field">
+                        <label for="cat-type">Event type</label>
+                        <select id="cat-type">
+                            <option>Birthday</option><option>Corporate</option><option>Wedding / shower</option><option>Other</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="cat-fulfillment">Pickup or delivery</label>
+                        <select id="cat-fulfillment">
+                            <option>Pickup</option><option>Delivery</option><option>Not sure yet</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="cat-notes">Dietary needs &amp; details <span class="hint">(optional)</span></label>
+                    <textarea id="cat-notes" rows="3" placeholder="Budget range, vegan/gluten-free counts, anything else useful"></textarea>
+                </div>
+                <button type="submit" class="btn btn-chili submit-btn">Send Catering Request</button>
+                <p class="form-note">This opens your email client with everything filled in and sends straight to the restaurant.</p>
+                <p id="cater-status"></p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="wrap">
+        <div>
+            <div class="brand-foot">Yum Yum Noodle Bar</div>
+            <p>Japanese noodle bowls, Southeast Asian street food, and other Asian specialties — vegan, vegetarian, and gluten-free options at every location.</p>
+        </div>
+        <div>
+            <h4>Woodstock</h4>
+            <p>4 Rock City Rd<br>845.679.7992</p>
+        </div>
+        <div>
+            <h4>Kingston</h4>
+            <p>275 Fair St<br>845.338.1400</p>
+        </div>
+        <div>
+            <h4>Red Hook</h4>
+            <p>7496 S Broadway<br>845.835.6383</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+const RESTAURANT_EMAIL = "contact@yumyumnoodlebar.com";
+
+document.getElementById('reservation-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('res-name').value.trim();
+    const phone = document.getElementById('res-phone').value.trim();
+    const email = document.getElementById('res-email').value.trim();
+    const location = document.getElementById('res-location').value;
+    const date = document.getElementById('res-date').value;
+    const time = document.getElementById('res-time').value;
+    const party = document.getElementById('res-party').value;
+    const notes = document.getElementById('res-notes').value.trim();
+
+    const subject = encodeURIComponent(`Reservation request — ${name}, ${date} ${time}`);
+    const body = encodeURIComponent(
+        `New reservation request\n\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nLocation: ${location}\nDate: ${date}\nTime: ${time}\nParty size: ${party}\nSpecial requests: ${notes || 'None'}`
+    );
+    window.location.href = `mailto:${RESTAURANT_EMAIL}?subject=${subject}&body=${body}`;
+
+    const status = document.getElementById('res-status');
+    status.textContent = "Opening your email client…";
+    status.classList.add('show');
+});
+
+document.getElementById('catering-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('cat-name').value.trim();
+    const phone = document.getElementById('cat-phone').value.trim();
+    const email = document.getElementById('cat-email').value.trim();
+    const location = document.getElementById('cat-location').value;
+    const date = document.getElementById('cat-date').value;
+    const guests = document.getElementById('cat-guests').value;
+    const type = document.getElementById('cat-type').value;
+    const fulfillment = document.getElementById('cat-fulfillment').value;
+    const notes = document.getElementById('cat-notes').value.trim();
+
+    const subject = encodeURIComponent(`Catering request — ${name}, ${date} (${guests} guests)`);
+    const body = encodeURIComponent(
+        `New catering request\n\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nPreferred location: ${location}\nEvent date: ${date}\nGuest count: ${guests}\nEvent type: ${type}\nPickup or delivery: ${fulfillment}\nDetails: ${notes || 'None'}`
+    );
+    window.location.href = `mailto:${RESTAURANT_EMAIL}?subject=${subject}&body=${body}`;
+
+    const status = document.getElementById('cater-status');
+    status.textContent = "Opening your email client…";
+    status.classList.add('show');
+});
+</script>
+</body>
+</html>
